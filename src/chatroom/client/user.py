@@ -10,25 +10,27 @@ from threading import *
 class User:
 
     class Worker(Thread):
-        def __init__(self, queue: list, conn: socket):
+        def __init__(self, queue: list, conn: socket, msg_var: StringVar):
             Thread.__init__(self)
             self.queue = queue
             self.running = True
             self.sock = conn
             self.send_msg =""
+            self.message_variable = msg_var #message variable
 
         def recv_loop(self):
             data = "" # data var
+            self.sock.settimeout(0.5) # wait 0.5 seconds
 
             try:
                 data = self.sock.recv(2).decode()
 
-                if data ==0x1: # recv message
+                if data ==1: # recv message
                     data = int(self.sock.recv(2)) # recv message size
                     data = self.sock.recv(data).decode() # recv message
                     self.queue.append(data) # appends data to queue
 
-                elif data == 0x2: #send message
+                elif data == 2: #send message
                     data = str.encode(self.send_msg).__sizeof__() #gets message size
                     self.sock.sendall(data) #sends message size
                     data = str.encode(self.send_msg) #encodes message
@@ -41,13 +43,30 @@ class User:
             except Exception as exc:
                 pass
 
+        def msg_loop(self):
+            # begin the main update loop
+
+            current_string =self.message_variable.get() #get what's on-screen
+
+            for msg in self.queue:
+                current_thread += "\n" + msg # add typed out line in queue
+                lines = int(current_string.split("\n").__len__())
+                if lines > 5: #checking if length is longer that 5 lines
+                    hold = current_string.split("\n")[1:4] # getting rid of top line to make space for new line
+                    current_string = ''.join(hold)
+
+                self.message_variable.set(current_string)
+                self.queue.pop()
+
+
         def run(self):
             while self.running:
                 self.recv_loop()
                 self.send()
+                self.msg_loop()
 
         def send(self):
-            if self.send_msg != "":
+            if self.send_msg != "": #if msg isn't nothing
                 self.sock.sendall(bytes(0x1)) # tells server to prepare to recv
 
         def add_to_queue(self,msg): #called by gui
@@ -59,19 +78,16 @@ class User:
     
     def __init__(self, tk: Tk, conn: socket):
         self.queue = []
-        self.length_of_queue = 10
-        self.flag = 0
         self.sock = conn  # no need to connect this socket object because it already was in login
         self.username = ""
-        self.worker = self.Worker(self.queue, self.sock)
+        self.message_variable = StringVar()
+        self.worker = self.Worker(self.queue, self.sock, self.message_variable)
         self.worker.start() #starts worker
 
-        self.tk = tk
+        self.tk = tk #makes window
         tk.title("Chatroom - Main Window")
         tk.geometry("380x160")
-        tk.resizable(0,0)
-
-        self.message_variable = StringVar()
+        tk.resizable(0,0) #can't change window size
 
         self.left_frame = Frame(tk,width =300) #makes frame 
         self.right_frame = Frame(tk,width = 100)
@@ -111,7 +127,7 @@ class User:
         pass
 
     def identify(self):
-        self.sock.sendall(0x3) # asks server who we are
+        self.sock.sendall(3) # asks server who we are
         self.username = self.sock.recv(4).decode() #gets username
 
 
@@ -127,12 +143,10 @@ class User:
 
         pass
 
-    def get_flag(self):
-        return self.flag
-
-
 if __name__ == '__main__':
     root = Tk()
     gui = User(root, socket())
 
+    gui.identify()
     root.mainloop()
+    gui.worker.join()
