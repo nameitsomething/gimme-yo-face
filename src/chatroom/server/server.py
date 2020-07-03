@@ -13,6 +13,7 @@ clients = []
 class Session(Thread):
 
     def __init__(self, conn:socket):
+        Thread.__init__(self)
         self.data =""
         self.command = 0
         self.sock = conn
