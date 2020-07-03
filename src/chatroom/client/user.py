@@ -27,7 +27,7 @@ class User:
                 data = self.sock.recv(2).decode()
 
                 if data ==1: # recv message
-                    data = int.from_bytes(self.sock.recv(2)) # recv message size
+                    data = int.from_bytes(self.sock.recv(2),"big") # recv message size
                     data = self.sock.recv(data).decode() # recv message
                     self.queue.append(data) # appends data to queue
 

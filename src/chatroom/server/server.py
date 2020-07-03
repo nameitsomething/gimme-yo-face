@@ -38,7 +38,7 @@ class Session(Thread):
             elif self.command == 2: #recv data command
                 # only issued by the client to the host
                 self.sock.sendall(struc.pack("B",self.command))
-                data = int.from_bytes(self.sock.recv(2))
+                data = int.from_bytes(self.sock.recv(2),"big")
                 self.data = self.rock.recv(data).decode()
                 self.recv_flag = True
                 
@@ -51,7 +51,7 @@ class Session(Thread):
                 self.command = 0
 
             if self.command == 0:# wait for user ot issue a command
-                self.command = int.from_bytes(self.sock.recv(2))
+                self.command = int.from_bytes(self.sock.recv(2),"big")
 
         except timeout as timeExcp:
             pass
