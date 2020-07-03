@@ -65,7 +65,7 @@ class Session(Thread):
 def login(self): # check username/password
     creds = []
     with open('maybePasswords.csv', "r", newline=' ') as file:
-        reader = reader.csv(file, delimiter=',')
+        reader = reader.csv(file, delimiter=')
 
         for row in reader:
             creds.append(row)
@@ -75,11 +75,9 @@ def login(self): # check username/password
     if data in creds: # if right
         self.sock.sendall(bytes(1)) #right passowrds
         self.username = data[0] 
-        print("yeet")
         return True
     else: #if wrong
         self.sock.sendall(bytes(3)) #incrorect thing
-        print("oof")
         return False
 
 
