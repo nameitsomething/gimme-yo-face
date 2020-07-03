@@ -5,6 +5,7 @@
 from tkinter import *
 from socket import socket,error
 from threading import *
+import struct
 
 
 class User:
@@ -26,7 +27,7 @@ class User:
                 data = self.sock.recv(2).decode()
 
                 if data ==1: # recv message
-                    data = int(self.sock.recv(2)) # recv message size
+                    data = int.from_bytes(self.sock.recv(2)) # recv message size
                     data = self.sock.recv(data).decode() # recv message
                     self.queue.append(data) # appends data to queue
 
@@ -50,7 +51,7 @@ class User:
 
             for msg in self.queue:
                 current_thread += "\n" + msg # add typed out line in queue
-                lines = int(current_string.split("\n").__len__())
+                lines = int.(current_string.split("\n").__len__())
                 if lines > 5: #checking if length is longer that 5 lines
                     hold = current_string.split("\n")[1:4] # getting rid of top line to make space for new line
                     current_string = ''.join(hold)
@@ -67,7 +68,7 @@ class User:
 
         def send(self):
             if self.send_msg != "": #if msg isn't nothing
-                self.sock.sendall(bytes(0x1)) # tells server to prepare to recv
+                self.sock.sendall(struct.pack("B", 1)) # tells server to prepare to recv
 
         def add_to_queue(self,msg): #called by gui
             self.send_msg = msg

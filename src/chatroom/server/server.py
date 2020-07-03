@@ -1,6 +1,7 @@
 from socket import *
 from threading import *
 import csv
+import struct #converting from int to byte using struct.pack("B", thing)
 
 HOST = ""
 PORT = 12345
@@ -29,15 +30,15 @@ class Session(Thread):
             if self.command == 1: #send data command
                 # only issues by the server
                 data = str.encode(self,data)
-                self.sock.sendall(bytes(self.command))
-                self.sock.sendall(bytes(data.__len__()))
+                self.sock.sendall((struc.pack("B",self.command))
+                self.sock.sendall(struc.pack("B",data.__len__()))
                 self.sock.sendall(data)
                 self.command = 0
 
             elif self.command == 2: #recv data command
                 # only issued by the client to the host
-                self.sock.sendall(bytes(self.command))
-                data = int(self.sock.recv(2))
+                self.sock.sendall(struc.pack("B",self.command))
+                data = int.from_bytes(self.sock.recv(2))
                 self.data = self.rock.recv(data).decode()
                 self.recv_flag = True
                 
@@ -50,7 +51,7 @@ class Session(Thread):
                 self.command = 0
 
             if self.command == 0:# wait for user ot issue a command
-                self.command = int(self.sock.recv(2))
+                self.command = int.from_bytes(self.sock.recv(2))
 
         except timeout as timeExcp:
             pass
@@ -73,11 +74,11 @@ def login(self): # check username/password
     data = self.sock.recv(256).decode().spilt(',')
 
     if data in creds: # if right
-        self.sock.sendall(bytes(1)) #right passowrds
+        self.sock.sendall(struct.pack("B",1)) #right passowrds
         self.username = data[0] 
         return True
     else: #if wrong
-        self.sock.sendall(bytes(3)) #incrorect thing
+        self.sock.sendall(struct.pack("B",3)) #incrorect thing
         return False
 
 
