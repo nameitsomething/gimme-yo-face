@@ -70,7 +70,7 @@ class Session(Thread):
 
     def login(self):
         creds = []
-        with open('notPasswords.csv', "r", newline='') as file:
+        with open('maybePasswords.csv', "r", newline='') as file:
             reader = csv.reader(file, delimiter=',')
 
             for row in reader:
