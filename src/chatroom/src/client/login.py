@@ -12,8 +12,8 @@ from tkinter import *
 from socket import socket
 from threading import *
 
-HOST = "3.218.156.248" # host thing
-PORT = 12345 #client thing
+HOST = "3.128.156.248"  # Host address
+PORT = 12345  # Host port
 
 
 class Login:
@@ -46,16 +46,21 @@ class Login:
         self.sock.connect((HOST, PORT))  # First, connect to the server
         data = f"{user},{pw}"  # format login data to send to the server
         self.sock.sendall(data.encode())  # encode and send the data
-        data = self.sock.recv(2).decode()  # wait for a response on whether or not it was successful
+        data = int.from_bytes(self.sock.recv(2), "big") # wait for a response on whether or not it was successful
+
+        print(data)
 
         if data == 1:  # Normal login
             self.flag = 1  # set normal login flag
+            print("Normal")
         elif data == 2:  # Incorrect creds
             self.flag = 3
-            self.sock.detach() # disconnects 
+            self.sock.detach()  # if login fails, disconnect from server
+            print("Not Normal")
         else:
             self.flag = 2  # abnormal login
-            self.sock.detach() # disconnects
+            print("not normal 2")
+            self.sock.detach()
 
     def get_flag(self):  # get flag for external user
         return self.flag
