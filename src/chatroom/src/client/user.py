@@ -101,14 +101,14 @@ class User:
 
     def clear_button_command(self):
         self.message_entry.delete(0, "end")
-        self.message_variable.set("")
+        self.message_variable.set(" ")
 
     def logout_button_command(self):
         pass
 
     def identify(self):
         self.sock.sendall(struct.pack("B", 3))  # ask the server who we are
-        self.username = self.sock.recv(4).decode()
+        self.username = self.sock.recv(128).decode()
 
     def get_flag(self):
         return self.flag
@@ -122,12 +122,11 @@ class User:
         for msg in self.queue:
             current_string += "\n" + msg
             self.queue.pop()
-            print("there's a message")
 
             lines = int(current_string.split("\n").__len__())
             if lines > 5:
                 hold = current_string.split("\n")[1:lines]
-                current_string = ''.join(hold)
+                current_string = "\n".join(hold)
                 print("line thing")
 
             self.message_variable.set(current_string)
