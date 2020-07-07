@@ -93,6 +93,7 @@ class Session(Thread):
         if self.login():
             while self.running:
                 self.recv_loop()
+                print("main thread loop")
                 
 
 
