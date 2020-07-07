@@ -127,7 +127,7 @@ def runtime():
         if d is not "":
             for c in clients:  # send data to all
                 c.command = 1
-                c.data = data
+                c.data = d
                 print("doing the sending thing")
 
 
