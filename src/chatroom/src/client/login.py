@@ -12,8 +12,8 @@ from tkinter import *
 from socket import socket
 from threading import *
 
-HOST = "3.128.156.248"  # Host address
-PORT = 12345  # Host port
+HOST = '3.128.156.248'  # Host address
+PORT = 12346  # Host port
 
 
 class Login:

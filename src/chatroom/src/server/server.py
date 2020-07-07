@@ -4,7 +4,7 @@ from threading import *
 import csv
 
 HOST = ""
-PORT = 12345
+PORT = 12346
 
 running = True
 main_sock = socket()
