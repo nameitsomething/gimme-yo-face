@@ -34,7 +34,7 @@ if __name__ == '__main__':
         flag = 0
         root = Tk()
         user_gui = User(root, sock)
-        user_gui.identify
+        user_gui.identify()
         while running:
             flag = user_gui.get_flag()  # get the current status flag from the window
             if flag == 0:  # Normal operation
