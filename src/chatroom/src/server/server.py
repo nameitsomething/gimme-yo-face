@@ -23,7 +23,7 @@ class Session(Thread):
         self.username = ""
 
     def recv_loop(self):
-        self.sock.settimeout(0.5)
+        self.sock.settimeout(0.25)
         try:
             if self.command == 1:  # send data command
                 # only issues by the server
