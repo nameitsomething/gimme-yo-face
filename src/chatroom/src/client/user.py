@@ -82,7 +82,7 @@ class User:
         self.clear_button = Button(self.right_frame, text="Clear", command=self.clear_button_command)
         self.logout_button = Button(self.right_frame, text="Log Out", command=self.logout_button_command)
 
-        self.message_variable.set("This is an empty chat window")
+        self.message_variable.set("")
 
         # Pack the left frame
         self.message_label.pack(side=TOP, fill=X)

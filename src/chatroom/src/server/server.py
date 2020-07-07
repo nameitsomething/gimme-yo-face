@@ -64,7 +64,7 @@ class Session(Thread):
             print("timeout error?")
             pass
         except error as errMsg:
-            print("error error?")
+            print(f"error error, {errMsg}")
             pass
 
         except Exception as exc:
