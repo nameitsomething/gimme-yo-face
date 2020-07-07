@@ -54,7 +54,7 @@ class Session(Thread):
 
             if self.command == 0:  # wait for user to issue a command
                 self.command = int.from_bytes(self.sock.recv(2), "big")
-                print("waiting")
+                print("waiting for command from client")
               
 
         except timeout as timeExcp:
@@ -82,18 +82,15 @@ class Session(Thread):
         if data in creds:
             self.sock.sendall(struct.pack("B", 1))
             self.username = data[0]
-            print("correct password")
             return True
         else:
             self.sock.sendall(struct.pack("B", 2))
-            print("wrong password/something else")
             return False
 
     def run(self):
         if self.login():
             while self.running:
                 self.recv_loop()
-                print("worker thread loop")
                 
 
 
