@@ -54,6 +54,7 @@ class Session(Thread):
 
             if self.command == 0:  # wait for user to issue a command
                 self.command = int.from_bytes(self.sock.recv(2), "big")
+                print("waiting")
               
 
         except timeout as timeExcp:
@@ -113,14 +114,13 @@ class Router(Thread):
                 print("added new session")
                 
 
-
 def runtime():
     data = []
     for c in clients:
         if c.recv_flag:  # someone has sent data
             data.append(c.data)  # copy and break
             c.recv_flag = False # reset the flag
-            print("data was sent and flag has been reset")
+            print("client recieve")
 
     for d in data:
         if d is not "":

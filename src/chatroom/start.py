@@ -34,9 +34,11 @@ if __name__ == '__main__':
         flag = 0
         root = Tk()
         user_gui = User(root, sock)
+        print("created user win")
         while running:
             flag = user_gui.get_flag()  # get the current status flag from the window
             if flag == 0:  # Normal operation
+                user_gui.msg_loop() #gets new messages it reievces and displays it
                 root.update()
                 root.update_idletasks()
             else:  # Anything other than 0, exit

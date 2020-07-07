@@ -122,10 +122,12 @@ class User:
         for msg in self.queue:
             current_string += "\n" + msg
             self.queue.pop()
+            print("there's a message")
 
             lines = int(current_string.split("\n").__len__())
             if lines > 5:
                 hold = current_string.split("\n")[1:lines]
                 current_string = ''.join(hold)
+                print("line thing")
 
             self.message_variable.set(current_string)
