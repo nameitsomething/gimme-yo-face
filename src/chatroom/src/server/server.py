@@ -53,7 +53,10 @@ class Session(Thread):
                 print("command 3 was done")
 
             if self.command == 0:  # wait for user to issue a command
-                self.command = int.from_bytes(self.sock.recv(2), "big")
+                data = int.from_bytes(self.sock.recv(2), "big")
+
+                if data <= 3:
+                    self.command = data
                 print("waiting for command from client")
               
 
