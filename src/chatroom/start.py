@@ -33,8 +33,10 @@ if __name__ == '__main__':
         running = True
         flag = 0
         root = Tk()
+        
         user_gui = User(root, sock)
         user_gui.identify()
+        root.bind_all('<Return>', user_gui.enter_button_command)
         while running:
             flag = user_gui.get_flag()  # get the current status flag from the window
             if flag == 0:  # Normal operation

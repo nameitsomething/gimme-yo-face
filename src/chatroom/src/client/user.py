@@ -2,6 +2,7 @@ import struct
 from tkinter import *
 from socket import socket, error, timeout
 from threading import *
+import keyboard
 
 
 class User:
@@ -95,7 +96,8 @@ class User:
         self.right_frame.place(x=285, y=5, width=60, height=150)
 
     def enter_button_command(self):
-        self.worker.add_to_queue(self.username + ">" + self.message_entry.get())
+        self.worker.add_to_queue(" "+ self.username + ">" + self.message_entry.get())
+        print(self.username)
         self.worker.send()
         self.message_entry.delete(0, "end")
 
@@ -108,7 +110,8 @@ class User:
 
     def identify(self):
         self.sock.sendall(struct.pack("B", 3))  # ask the server who we are
-        self.username = self.sock.recv(128).decode()
+        self.username = self.sock.recv(512).decode()
+        print(self.username)
 
     def get_flag(self):
         return self.flag
