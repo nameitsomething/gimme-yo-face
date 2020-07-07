@@ -65,7 +65,7 @@ class Session(Thread):
             pass
 
         except Exception as exc:
-            
+            print(f"other exception, {exc}")
             # anything else
             pass
 
@@ -93,7 +93,7 @@ class Session(Thread):
         if self.login():
             while self.running:
                 self.recv_loop()
-                print("main thread loop")
+                print("worker thread loop")
                 
 
 
