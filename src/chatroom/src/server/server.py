@@ -54,7 +54,7 @@ class Session(Thread):
 
             if self.command == 0:  # wait for user to issue a command
                 self.command = int.from_bytes(self.sock.recv(2), "big")
-                print("server reiceved command")
+              
 
         except timeout as timeExcp:
             print("timeout error?")
@@ -64,7 +64,7 @@ class Session(Thread):
             pass
 
         except Exception as exc:
-            print("green excepion error thing")
+            
             # anything else
             pass
 
@@ -92,7 +92,7 @@ class Session(Thread):
         if self.login():
             while self.running:
                 self.recv_loop()
-                print("doing the recieve loop")
+                
 
 
 class Router(Thread):
